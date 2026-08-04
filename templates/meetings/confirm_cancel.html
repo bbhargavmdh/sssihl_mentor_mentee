@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Cancel Meeting</h4>
+<p>Cancel the meeting on {{ meeting.meeting_date }} at {{ meeting.meeting_time }}? Assigned students will be notified.</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Cancel Meeting</button>
+  <a href="javascript:history.back()" class="btn btn-outline-secondary">Back</a>
+</form>
+{% endblock %}

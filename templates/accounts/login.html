@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Login - SSSIHL Mentoring{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-4 mt-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <div class="text-center mb-3">
+          <img src="/static/img/sssihl_logo.png" height="60" alt="SSSIHL">
+          <h5 class="mt-2">Mentor-Mentee Portal</h5>
+        </div>
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            {{ form.username }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            {{ form.password }}
+          </div>
+          {% if form.errors %}
+            <div class="alert alert-danger py-2">Invalid username or password.</div>
+          {% endif %}
+          <button type="submit" class="btn btn-sssihl w-100">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

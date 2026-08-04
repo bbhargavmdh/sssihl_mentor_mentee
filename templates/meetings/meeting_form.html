@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>{{ title }}</h4>
+<form method="post" class="card p-4">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Meeting Type</label>
+      {{ form.meeting_type }}
+    </div>
+    <div class="col-md-3 mb-3">
+      <label class="form-label">Date</label>
+      {{ form.meeting_date }}
+    </div>
+    <div class="col-md-3 mb-3">
+      <label class="form-label">Time</label>
+      {{ form.meeting_time }}
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Students</label>
+    <div class="border rounded p-2">{{ form.students }}</div>
+    {% for error in form.students.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Venue</label>
+    {{ form.venue }}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Notes</label>
+    {{ form.notes }}
+  </div>
+
+  <div id="room-visit-fields" class="border rounded p-3 mb-3 bg-light">
+    <h6>Room Visit Details</h6>
+    <div class="row">
+      <div class="col-md-3 mb-2"><label class="form-label">Hostel Name</label>{{ room_form.hostel_name }}</div>
+      <div class="col-md-3 mb-2"><label class="form-label">Block</label>{{ room_form.block }}</div>
+      <div class="col-md-3 mb-2"><label class="form-label">Floor</label>{{ room_form.floor }}</div>
+      <div class="col-md-3 mb-2"><label class="form-label">Room Number</label>{{ room_form.room_number }}</div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-sssihl">Save</button>
+</form>
+<script>
+function toggleRoomFields() {
+  var type = document.getElementById('id_meeting_type').value;
+  document.getElementById('room-visit-fields').style.display = (type === 'ROOM_VISIT') ? 'block' : 'none';
+}
+document.addEventListener('DOMContentLoaded', function() {
+  var sel = document.getElementById('id_meeting_type');
+  if (sel) { sel.addEventListener('change', toggleRoomFields); toggleRoomFields(); }
+});
+</script>
+{% endblock %}

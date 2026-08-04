@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>All Mentoring Records</h4>
+<table class="table table-bordered bg-white">
+  <thead><tr><th>Student</th><th>Mentor</th><th>Meeting Date</th><th>PDF</th></tr></thead>
+  <tbody>
+  {% for r in page_obj %}
+    <tr>
+      <td>{{ r.mentee.user.get_full_name }}</td>
+      <td>{{ r.mentor.user.get_full_name }}</td>
+      <td>{{ r.meeting.meeting_date }}</td>
+      <td><a href="{% url 'mentoring:record_pdf' r.pk %}" class="btn btn-sm btn-outline-success">Download</a></td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="4" class="text-center text-muted">No records yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% include "core/_pagination.html" %}
+{% endblock %}

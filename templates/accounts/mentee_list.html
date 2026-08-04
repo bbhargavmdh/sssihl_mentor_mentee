@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Students</h4>
+  <a href="{% url 'accounts:mentee_import' %}" class="btn btn-outline-secondary">Import from Excel</a>
+</div>
+<form class="mb-3 d-flex" method="get">
+  <input type="text" name="q" value="{{ query }}" class="form-control me-2" placeholder="Search by name, registration no., department">
+  <button class="btn btn-outline-secondary">Search</button>
+</form>
+<table class="table table-bordered bg-white">
+  <thead><tr><th>Name</th><th>Registration No.</th><th>Mentor</th><th>Department</th><th>Actions</th></tr></thead>
+  <tbody>
+  {% for mentee in page_obj %}
+    <tr>
+      <td>{{ mentee.user.get_full_name }}</td>
+      <td>{{ mentee.registration_number }}</td>
+      <td>{{ mentee.mentor.user.get_full_name|default:"Unassigned" }}</td>
+      <td>{{ mentee.department }}</td>
+      <td>
+        <a href="{% url 'accounts:mentee_assign' mentee.pk %}" class="btn btn-sm btn-outline-primary">Assign Mentor</a>
+        <a href="{% url 'accounts:mentee_reset_password' mentee.pk %}" class="btn btn-sm btn-outline-warning">Reset Password</a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5" class="text-center text-muted">No students found.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% include "core/_pagination.html" %}
+{% endblock %}

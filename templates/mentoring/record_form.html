@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Mentoring Record - {{ meeting.get_meeting_type_display }} on {{ meeting.meeting_date }}</h4>
+<p class="text-muted">Student(s): {% for s in meeting.students.all %}{{ s.user.get_full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+
+<form method="post">
+  {% csrf_token %}
+
+  <div class="card mb-3">
+    <div class="card-header bg-sssihl text-white">Academic Progress</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Current Semester</label>
+          {{ form.current_semester }}
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Improvement Status</label>
+          {{ form.improvement_status }}
+        </div>
+      </div>
+      {{ subject_fs.management_form }}
+      <table class="table table-sm">
+        <thead><tr><th>Subject</th><th>Attendance (%)</th><th>Performance / Remarks</th><th></th></tr></thead>
+        <tbody>
+        {% for sf in subject_fs %}
+          <tr>
+            <td>{{ sf.id }}{{ sf.subject }}</td>
+            <td>{{ sf.attendance_percent }}</td>
+            <td>{{ sf.performance_remarks }}</td>
+            <td>{% if sf.DELETE %}{{ sf.DELETE }} Remove{% endif %}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header bg-sssihl text-white">Challenges Faced</div>
+    <div class="card-body">
+      <div class="mb-2"><label class="form-label">Remarks</label>{{ form.remarks }}</div>
+      <div class="mb-2"><label class="form-label">Academic Challenges</label>{{ form.academic_challenges }}</div>
+      <div class="mb-2"><label class="form-label">Personal Issues</label>{{ form.personal_issues }}</div>
+      <div class="mb-2"><label class="form-label">Emotional / Psychological Concerns</label>{{ form.emotional_psychological_concerns }}</div>
+      <div class="mb-2"><label class="form-label">Career Counseling</label>{{ form.career_counseling }}</div>
+      <div class="mb-2"><label class="form-label">Examination Stress</label>{{ form.examination_stress }}</div>
+      <div class="mb-2"><label class="form-label">Logistical Challenges</label>{{ form.logistical_challenges }}</div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header bg-sssihl text-white">Goals</div>
+    <div class="card-body">
+      <div class="mb-2"><label class="form-label">Short-Term Goals</label>{{ form.short_term_goals }}</div>
+      <div class="mb-2"><label class="form-label">Long-Term Goals</label>{{ form.long_term_goals }}</div>
+      <div class="mb-2"><label class="form-label">Personal Development Goals</label>{{ form.personal_development_goals }}</div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header bg-sssihl text-white">Action Items / Follow-up</div>
+    <div class="card-body">
+      {{ action_fs.management_form }}
+      <table class="table table-sm">
+        <thead><tr><th>Task</th><th>Assigned To</th><th>Deadline</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        {% for af in action_fs %}
+          <tr>
+            <td>{{ af.id }}{{ af.task_description }}</td>
+            <td>{{ af.assigned_to }}</td>
+            <td>{{ af.deadline }}</td>
+            <td>{{ af.status }}</td>
+            <td>{% if af.DELETE %}{{ af.DELETE }} Remove{% endif %}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header bg-sssihl text-white">Feedback</div>
+    <div class="card-body">
+      <div class="mb-2"><label class="form-label">Mentor's Comments</label>{{ form.mentor_comments }}</div>
+      <div class="mb-2"><label class="form-label">Mentee's Reflections</label>{{ form.student_reflection }}</div>
+    </div>
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-header bg-sssihl text-white">Next Meeting Plan</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4 mb-2"><label class="form-label">Tentative Date</label>{{ form.next_meeting_date }}</div>
+        <div class="col-md-8 mb-2"><label class="form-label">Focus Areas</label>{{ form.next_meeting_focus }}</div>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" name="save_draft" class="btn btn-outline-secondary">Save Draft</button>
+  <button type="submit" name="finalize" class="btn btn-sssihl">Finalize &amp; Generate PDF</button>
+</form>
+{% endblock %}

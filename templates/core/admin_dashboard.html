@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Administrator Dashboard</h4>
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="card card-stat p-3"><div class="text-muted small">Total Mentors</div><div class="fs-3">{{ total_mentors }}</div></div></div>
+  <div class="col-md-3"><div class="card card-stat p-3"><div class="text-muted small">Total Students</div><div class="fs-3">{{ total_students }}</div></div></div>
+  <div class="col-md-3"><div class="card card-stat p-3"><div class="text-muted small">Upcoming Meetings</div><div class="fs-3">{{ upcoming_meetings }}</div></div></div>
+  <div class="col-md-3"><div class="card card-stat p-3"><div class="text-muted small">Completed Meetings</div><div class="fs-3">{{ completed_meetings }}</div></div></div>
+  <div class="col-md-3"><div class="card card-stat p-3"><div class="text-muted small">PDFs Generated</div><div class="fs-3">{{ pdfs_generated }}</div></div></div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-3"><div class="card-header">Department Statistics (Mentors)</div>
+      <ul class="list-group list-group-flush">
+        {% for d in department_stats %}<li class="list-group-item d-flex justify-content-between">{{ d.department }} <span>{{ d.count }}</span></li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card mb-3"><div class="card-header">Monthly Meetings</div>
+      <ul class="list-group list-group-flush">
+        {% for m in monthly_meetings %}<li class="list-group-item d-flex justify-content-between">{{ m.month|date:"M Y" }} <span>{{ m.count }}</span></li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card"><div class="card-header">Recent Activity</div>
+  <ul class="list-group list-group-flush">
+    {% for m in recent_meetings %}
+      <li class="list-group-item">{{ m.mentor.user.get_full_name }} - {{ m.get_meeting_type_display }} on {{ m.meeting_date }} <span class="badge bg-secondary">{{ m.get_status_display }}</span></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

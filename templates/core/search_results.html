@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Search</h4>
+<form method="get" class="d-flex mb-4">
+  <input type="text" name="q" value="{{ query }}" class="form-control me-2" placeholder="Search students, mentors, meetings, hostels, rooms...">
+  <button class="btn btn-sssihl">Search</button>
+</form>
+{% if query %}
+<h6>Mentors</h6>
+<ul class="list-group mb-3">{% for m in results.mentors %}<li class="list-group-item">{{ m.user.get_full_name }} ({{ m.employee_id }}) - {{ m.department }}</li>{% empty %}<li class="list-group-item text-muted">No matches</li>{% endfor %}</ul>
+<h6>Students</h6>
+<ul class="list-group mb-3">{% for s in results.students %}<li class="list-group-item">{{ s.user.get_full_name }} ({{ s.registration_number }}) - Mentor: {{ s.mentor.user.get_full_name|default:"Unassigned" }}</li>{% empty %}<li class="list-group-item text-muted">No matches</li>{% endfor %}</ul>
+<h6>Meetings</h6>
+<ul class="list-group mb-3">{% for m in results.meetings %}<li class="list-group-item">{{ m.meeting_date }} - {{ m.get_meeting_type_display }} ({{ m.mentor.user.get_full_name }})</li>{% empty %}<li class="list-group-item text-muted">No matches</li>{% endfor %}</ul>
+{% endif %}
+{% endblock %}

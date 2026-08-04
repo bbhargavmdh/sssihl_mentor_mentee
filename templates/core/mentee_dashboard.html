@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>My Dashboard</h4>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-3"><div class="card-header">Upcoming Meetings</div>
+      <ul class="list-group list-group-flush">
+        {% for m in upcoming_meetings %}<li class="list-group-item">{{ m.meeting_date }} - {{ m.get_meeting_type_display }} with {{ m.mentor.user.get_full_name }}</li>{% empty %}<li class="list-group-item text-muted">None</li>{% endfor %}
+      </ul>
+    </div>
+    <div class="card mb-3"><div class="card-header">Notifications</div>
+      <ul class="list-group list-group-flush">
+        {% for n in notifications %}<li class="list-group-item">{{ n.message }}</li>{% empty %}<li class="list-group-item text-muted">None</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card mb-3"><div class="card-header">Recent Mentoring Reports</div>
+      <ul class="list-group list-group-flush">
+        {% for r in recent_pdfs %}<li class="list-group-item">{{ r.meeting.meeting_date }} - <a href="{% url 'mentoring:record_pdf' r.pk %}">Download PDF</a></li>{% empty %}<li class="list-group-item text-muted">None</li>{% endfor %}
+      </ul>
+    </div>
+    <div class="card mb-3"><div class="card-header">Previous Meetings</div>
+      <ul class="list-group list-group-flush">
+        {% for m in previous_meetings %}<li class="list-group-item">{{ m.meeting_date }} - {{ m.get_meeting_type_display }}</li>{% empty %}<li class="list-group-item text-muted">None</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

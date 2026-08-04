@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Mark Meeting as Completed</h4>
+<p>Mark the meeting on {{ meeting.meeting_date }} at {{ meeting.meeting_time }} as completed? You will be taken to the mentoring record form next.</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-success">Mark Completed</button>
+  <a href="javascript:history.back()" class="btn btn-outline-secondary">Back</a>
+</form>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Reports</h4>
+<form method="get" class="row g-2 mb-4">
+  <div class="col-md-3">
+    <label class="form-label">Mentor</label>
+    <select name="mentor" class="form-control">
+      <option value="">All</option>
+      {% for m in mentors %}<option value="{{ m.pk }}" {% if request.GET.mentor == m.pk|stringformat:"s" %}selected{% endif %}>{{ m.user.get_full_name }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Department</label>
+    <input type="text" name="department" class="form-control" value="{{ request.GET.department }}">
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">From</label>
+    <input type="date" name="date_from" class="form-control" value="{{ request.GET.date_from }}">
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">To</label>
+    <input type="date" name="date_to" class="form-control" value="{{ request.GET.date_to }}">
+  </div>
+  <div class="col-md-2 d-flex align-items-end">
+    <button class="btn btn-sssihl me-2">Filter</button>
+  </div>
+</form>
+<a href="?{{ request.GET.urlencode }}&export=excel" class="btn btn-outline-success mb-3">Export to Excel</a>
+<table class="table table-bordered bg-white">
+  <thead><tr><th>Student</th><th>Mentor</th><th>Department</th><th>Meeting Date</th><th>PDF</th></tr></thead>
+  <tbody>
+  {% for r in records %}
+    <tr>
+      <td>{{ r.mentee.user.get_full_name }}</td>
+      <td>{{ r.mentor.user.get_full_name }}</td>
+      <td>{{ r.mentee.department }}</td>
+      <td>{{ r.meeting.meeting_date }}</td>
+      <td><a href="{% url 'mentoring:record_pdf' r.pk %}" class="btn btn-sm btn-outline-success">Download</a></td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5" class="text-center text-muted">No records match.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Mentoring Record - {{ record.mentee.user.get_full_name }}</h4>
+<p class="text-muted">Meeting Date: {{ record.meeting.meeting_date }} | Mentor: {{ record.mentor.user.get_full_name }}</p>
+{% if record.pdf_file %}
+<a href="{% url 'mentoring:record_pdf' record.pk %}" class="btn btn-sssihl mb-3">Download PDF</a>
+{% else %}
+<p class="text-muted">This record has not been finalized yet - no PDF is available.</p>
+{% endif %}
+
+<div class="card mb-3"><div class="card-header">Academic Progress</div><div class="card-body">
+<table class="table table-sm"><thead><tr><th>Subject</th><th>Attendance</th><th>Remarks</th></tr></thead><tbody>
+{% for s in record.subjects.all %}<tr><td>{{ s.subject }}</td><td>{{ s.attendance_percent }}</td><td>{{ s.performance_remarks }}</td></tr>{% endfor %}
+</tbody></table>
+</div></div>
+
+<div class="card mb-3"><div class="card-header">Feedback</div><div class="card-body">
+<p><strong>Mentor's Comments:</strong> {{ record.mentor_comments|default:"-" }}</p>
+<p><strong>Mentee's Reflections:</strong> {{ record.student_reflection|default:"-" }}</p>
+</div></div>
+
+<div class="card mb-3"><div class="card-header">Action Items</div><div class="card-body">
+<table class="table table-sm"><thead><tr><th>Task</th><th>Assigned To</th><th>Deadline</th><th>Status</th></tr></thead><tbody>
+{% for a in record.action_items.all %}<tr><td>{{ a.task_description }}</td><td>{{ a.assigned_to }}</td><td>{{ a.deadline|default:"-" }}</td><td>{{ a.get_status_display }}</td></tr>{% endfor %}
+</tbody></table>
+</div></div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Mentor Dashboard</h4>
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="card card-stat p-3"><div class="text-muted small">Assigned Mentees</div><div class="fs-3">{{ mentee_count }}</div></div></div>
+  <div class="col-md-3"><div class="card card-stat p-3"><div class="text-muted small">Upcoming Meetings</div><div class="fs-3">{{ upcoming_meetings|length }}</div></div></div>
+  <div class="col-md-3"><div class="card card-stat p-3"><div class="text-muted small">Pending Follow-ups</div><div class="fs-3">{{ pending_followups|length }}</div></div></div>
+  <div class="col-md-3"><div class="card card-stat p-3"><div class="text-muted small">Recent PDFs</div><div class="fs-3">{{ recent_pdfs|length }}</div></div></div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-3"><div class="card-header">Upcoming Meetings</div>
+      <ul class="list-group list-group-flush">
+        {% for m in upcoming_meetings %}<li class="list-group-item">{{ m.meeting_date }} - {{ m.get_meeting_type_display }}</li>{% empty %}<li class="list-group-item text-muted">None</li>{% endfor %}
+      </ul>
+    </div>
+    <div class="card mb-3"><div class="card-header">Pending Follow-ups</div>
+      <ul class="list-group list-group-flush">
+        {% for a in pending_followups %}<li class="list-group-item">{{ a.task_description }} - {{ a.record.mentee.user.get_full_name }}</li>{% empty %}<li class="list-group-item text-muted">None</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card mb-3"><div class="card-header">Recently Completed</div>
+      <ul class="list-group list-group-flush">
+        {% for m in recent_completed %}<li class="list-group-item">{{ m.meeting_date }} - {{ m.get_meeting_type_display }}</li>{% empty %}<li class="list-group-item text-muted">None</li>{% endfor %}
+      </ul>
+    </div>
+    <div class="card mb-3"><div class="card-header">Recent PDFs</div>
+      <ul class="list-group list-group-flush">
+        {% for r in recent_pdfs %}<li class="list-group-item">{{ r.mentee.user.get_full_name }} - <a href="{% url 'mentoring:record_pdf' r.pk %}">Download</a></li>{% empty %}<li class="list-group-item text-muted">None</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

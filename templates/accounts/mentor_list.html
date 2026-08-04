@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4>Mentors</h4>
+  <div>
+    <a href="{% url 'accounts:mentor_import' %}" class="btn btn-outline-secondary">Import from Excel</a>
+    <a href="{% url 'accounts:mentor_create' %}" class="btn btn-sssihl">Add Mentor</a>
+  </div>
+</div>
+<form class="mb-3 d-flex" method="get">
+  <input type="text" name="q" value="{{ query }}" class="form-control me-2" placeholder="Search by name, employee ID, department">
+  <button class="btn btn-outline-secondary">Search</button>
+</form>
+<table class="table table-bordered bg-white">
+  <thead><tr><th>Name</th><th>Employee ID</th><th>Department</th><th>Mentees</th><th>Actions</th></tr></thead>
+  <tbody>
+  {% for mentor in page_obj %}
+    <tr>
+      <td>{{ mentor.user.get_full_name }}</td>
+      <td>{{ mentor.employee_id }}</td>
+      <td>{{ mentor.department }}</td>
+      <td>{{ mentor.mentee_count }}</td>
+      <td>
+        <a href="{% url 'accounts:mentor_edit' mentor.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+        <a href="{% url 'accounts:mentor_reset_password' mentor.pk %}" class="btn btn-sm btn-outline-warning">Reset Password</a>
+        <a href="{% url 'accounts:mentor_delete' mentor.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5" class="text-center text-muted">No mentors found.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% include "core/_pagination.html" %}
+{% endblock %}

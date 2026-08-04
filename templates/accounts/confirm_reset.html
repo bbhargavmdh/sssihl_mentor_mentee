@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h4>Confirm Password Reset</h4>
+<p>Reset password for <strong>{{ object }}</strong> to the default password and email it to them?</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-warning">Reset Password</button>
+  <a href="javascript:history.back()" class="btn btn-outline-secondary">Cancel</a>
+</form>
+{% endblock %}
